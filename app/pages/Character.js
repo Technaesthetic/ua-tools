@@ -55,7 +55,7 @@ export default class Character extends React.Component {
     const { query } = this.props.location
     const { testList } = this.state
     const testComponents = testList.map((item) => {
-      return <Item key={item._id} _id={item._id} text={item.text} deleteItem={this.deleteItem} editItem={this.editItem}></Item>
+      return <li id={item._id}>{item.bio.firstName + ' ' + item.bio.lastName}</li>
     });
     return (
       <div>

@@ -8,7 +8,7 @@ export default class Layout extends React.Component {
     const isActive = this.props.history.isActive;
     return (
       <div>
-        <h1>A Place</h1>
+        <h1>Unknown Armies Character Tools</h1>
         <Link to=""><button class={isActive("", true) ? "button success" : "button"}>Home</button></Link>
         <Link to="about"><button class={isActive("about") ? "button success" : "button"}>About</button></Link>
         <Link to="settings"><button class={isActive("settings") ? "button success" : "button"}>Settings</button></Link>
