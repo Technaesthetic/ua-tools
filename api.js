@@ -1,22 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const models = require('./models/models')
+
 mongoose.connect('mongodb://localhost/uatools');
 
-var Character = mongoose.model('Character', {
-  _id: String,
-  text: String,
-  done: Boolean
-});
+var Character = models['character'];
 
-router.get('/get', function response(req, res) {
-  const list = Character.find({}, function (err, list) {
+router.post('/get/:type', function response(req, res) {
+  const type = req.params.type
+  console.log(req.body);
+  const list = models[type].find({}, function (err, list) {
     res.send(list);
   });
 });
 
-router.post('/add', function response(req, res) {
-  const note = new Character(req.body);
+router.post('/add/:type', function response(req, res) {
+  const type = req.params.type
+  const note = new models[type](req.body);
   note.save(function(err){
     if (err) {
       console.log(err);
@@ -27,8 +28,9 @@ router.post('/add', function response(req, res) {
   });
 });
 
-router.post('/del', function response(req, res) {
-  Character.findByIdAndRemove(req.body._id, function(err) {
+router.post('/del/:type', function response(req, res) {
+  const type = req.params.type
+  models[type].findByIdAndRemove(req.body._id, function(err) {
     if (err) {
       console.log(err);
       res.send({status: 'error', err});
@@ -38,10 +40,11 @@ router.post('/del', function response(req, res) {
   });
 });
 
-router.post('/upd', function response(req, res) {
+router.post('/upd/:type', function response(req, res) {
+  const type = req.params.type
   const update = {$set: req.body.fields};
   console.log(req.body);
-  Character.findByIdAndUpdate(req.body._id, update, {}, function(err) {
+  models[type].findByIdAndUpdate(req.body._id, update, {}, function(err) {
     if (err) {
       console.log(err);
       res.send({status: 'error', err});

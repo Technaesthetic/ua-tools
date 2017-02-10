@@ -1,8 +1,8 @@
 import React from 'react';
 import * as TestActions from '../actions/TestActions';
-import testStore from '../stores/testStore';
+import characterStore from '../stores/CharacterStore';
 
-import Item from './About/Item';
+import CharacterSheet from './Character/CharacterSheet';
 
 
 
@@ -10,30 +10,26 @@ export default class Character extends React.Component {
   constructor() {
     super();
     this.state = {
-      testList: testStore.getAll(),
-      newName: ''
+      characters: characterStore.getAll()
     };
     this.addItem = this.addItem.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.setCharacter = this.setCharacter.bind(this);
   }
 
   componentWillMount() {
-    testStore.on('change', () => {
+    characterStore.on('change', () => {
       this.setState({
-        testList: testStore.getAll()
+        characters: characterStore.getAll()
       })
     })
   }
 
-  handleChange(e) {
-    const text = e.target.value;
-    this.setState({
-      newName: text
-    });
-  }
-
   deleteItem(_id) {
     TestActions.deleteItem(_id);
+  }
+
+  setCharacter(c) {
+    this.setState({selected: c})
   }
 
   editItem(_id, text) {
@@ -53,17 +49,18 @@ export default class Character extends React.Component {
   render() {
     const { params } = this.props
     const { query } = this.props.location
-    const { testList } = this.state
-    const testComponents = testList.map((item) => {
-      return <li id={item._id}>{item.bio.firstName + ' ' + item.bio.lastName}</li>
+    const { characters } = this.state
+    const chars = characters.map((item) => {
+      return <li id={item._id} onClick={this.setCharacter.bind(this, item)}>{item.bio.firstName + ' ' + item.bio.lastName}</li>
     });
+    // <input type="text" value={this.state.newName} onChange={this.handleChange}/>
     return (
       <div>
         <h1>Character</h1>
         <h3>{params.section}</h3>
         <h4>{query.thing}</h4>
-        <ul>{testComponents}</ul>
-        <input type="text" value={this.state.newName} onChange={this.handleChange}/>
+        <ul>{chars}</ul>
+        { this.state.selected ? <CharacterSheet character={this.state.selected}></CharacterSheet> : null}
         <button class="button" onClick={this.addItem.bind(this)}>+ Add</button>
       </div>
     );

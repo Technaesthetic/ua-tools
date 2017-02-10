@@ -3,11 +3,11 @@ const axios = require('axios');
 
 import dispatcher from '../dispatcher';
 
-class TestStore extends EventEmitter {
+class CharacterStore extends EventEmitter {
   constructor() {
     super();
     this.list = [];
-    this.fetch();
+    this.fetchAll();
   }
 
   createItem(text) {
@@ -18,7 +18,7 @@ class TestStore extends EventEmitter {
       text,
       done: false
     };
-    axios.post('/api/add', item).then(function(data){
+    axios.post('/api/add/character', item).then(function(data){
       console.log(data, item);
       self.fetch();
     });
@@ -26,7 +26,7 @@ class TestStore extends EventEmitter {
 
   deleteItem(_id) {
     const self = this;
-    axios.post('/api/del', { _id }).then(function(data) {
+    axios.post('/api/del/character', { _id }).then(function(data) {
       console.log(data, _id);
       self.fetch();
     });
@@ -34,15 +34,15 @@ class TestStore extends EventEmitter {
 
   updateItem(_id, fields) {
     const self = this;
-    axios.post('/api/upd', { _id, fields }).then(function(data) {
+    axios.post('/api/upd/character', { _id, fields }).then(function(data) {
       console.log(data, _id, fields);
       self.fetch();
     });
   }
 
-  fetch() {
+  fetchAll() {
     const self = this;
-    axios.get('/api/get').then(function(data){
+    axios.post('/api/get/character').then(function(data){
       self.list = data.data;
       self.emit('change');
     });
@@ -67,7 +67,7 @@ class TestStore extends EventEmitter {
   }
 }
 
-const testStore = new TestStore;
-dispatcher.register(testStore.handleActions.bind(testStore));
+const characterStore = new CharacterStore;
+dispatcher.register(characterStore.handleActions.bind(characterStore));
 window.dispatcher = dispatcher;
-export default testStore;
+export default characterStore;
