@@ -10,6 +10,31 @@ class CharacterStore extends EventEmitter {
     this.fetchAll();
   }
 
+  process(d) {
+    const self = this;
+    function upbeat (n) {
+      return 65 - (n * 5)
+    }
+    function downbeat (n) {
+      return 15 + (n * 5)
+    }
+    for (var c of d) {
+      c.abilities = {
+        fitness: upbeat(c.gauges.helplessness.hardened),
+        dodge: downbeat(c.gauges.helplessness.hardened),
+        status: upbeat(c.gauges.isolation.hardened),
+        pursuit: downbeat(c.gauges.isolation.hardened),
+        knowledge: upbeat(c.gauges.self.hardened),
+        lie: downbeat(c.gauges.self.hardened),
+        notice: upbeat(c.gauges.unnatural.hardened),
+        secrecy: downbeat(c.gauges.unnatural.hardened),
+        connect: upbeat(c.gauges.violence.hardened),
+        struggle: downbeat(c.gauges.violence.hardened),
+      }
+    }
+    self.list = d;
+  }
+
   createItem(text) {
     const self = this;
     const _id = Date.now();
@@ -43,7 +68,7 @@ class CharacterStore extends EventEmitter {
   fetchAll() {
     const self = this;
     axios.post('/api/get/character').then(function(data){
-      self.list = data.data;
+      self.process(data.data)
       self.emit('change');
     });
   }

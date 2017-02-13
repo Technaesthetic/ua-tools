@@ -13,10 +13,12 @@ export default class CharacterSheet extends React.Component {
       return <li>{m.type + ' from ' + m.origin}</li>
     })
     const gauges = Object.keys(c.gauges).map((g) => {
-        return <ShockGauge gauge={g} notches={c.gauges[g]}></ShockGauge>
-      return x;
+      return <ShockGauge gauge={g} notches={c.gauges[g]}></ShockGauge>
     });
-    console.log(Object.keys(c.gauges));
+    console.log(c);
+    const abilities = Object.keys(c.abilities).map((a) => {
+      return <p>{a}: {c.abilities[a]}</p>
+    });
     return (
       <div>
         <h1>{c.bio.firstName + ' ' + (c.bio.middleName ? c.bio.middleName + ' ' : null) + c.bio.lastName}</h1>
@@ -29,7 +31,7 @@ export default class CharacterSheet extends React.Component {
         <p>Noble Passion: {c.bio.passions.noble}</p>
         <ul>{madness}</ul>
         {gauges}
-
+        {abilities}
       </div>
     );
   }
