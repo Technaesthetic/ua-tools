@@ -17,7 +17,7 @@ export default class CharacterSheet extends React.Component {
     });
     console.log(c);
     const abilities = Object.keys(c.abilities).map((a) => {
-      return <p>{a}: {c.abilities[a]}</p>
+      return <p>{a}: {c.abilities[a].base} {c.abilities[a].effective ? '(' + c.abilities[a].effective + ')' : null}</p>
     });
     return (
       <div>

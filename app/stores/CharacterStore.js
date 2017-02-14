@@ -3,36 +3,13 @@ const axios = require('axios');
 
 import dispatcher from '../dispatcher';
 
+import Process from './CharacterStore/Process'
+
 class CharacterStore extends EventEmitter {
   constructor() {
     super();
     this.list = [];
     this.fetchAll();
-  }
-
-  process(d) {
-    const self = this;
-    function upbeat (n) {
-      return 65 - (n * 5)
-    }
-    function downbeat (n) {
-      return 15 + (n * 5)
-    }
-    for (var c of d) {
-      c.abilities = {
-        fitness: upbeat(c.gauges.helplessness.hardened),
-        dodge: downbeat(c.gauges.helplessness.hardened),
-        status: upbeat(c.gauges.isolation.hardened),
-        pursuit: downbeat(c.gauges.isolation.hardened),
-        knowledge: upbeat(c.gauges.self.hardened),
-        lie: downbeat(c.gauges.self.hardened),
-        notice: upbeat(c.gauges.unnatural.hardened),
-        secrecy: downbeat(c.gauges.unnatural.hardened),
-        connect: upbeat(c.gauges.violence.hardened),
-        struggle: downbeat(c.gauges.violence.hardened),
-      }
-    }
-    self.list = d;
   }
 
   createItem(text) {
@@ -68,7 +45,9 @@ class CharacterStore extends EventEmitter {
   fetchAll() {
     const self = this;
     axios.post('/api/get/character').then(function(data){
-      self.process(data.data)
+      for (var c of data.data) {
+        self.list.push(Process(c))
+      }
       self.emit('change');
     });
   }
