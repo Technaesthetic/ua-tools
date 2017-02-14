@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './CharacterSheet/CharacterSheet.scss'
 
 import ShockGauge from './CharacterSheet/ShockGauge'
 
@@ -20,7 +21,7 @@ export default class CharacterSheet extends React.Component {
       return <p>{a}: {c.abilities[a].base} {c.abilities[a].effective ? '(' + c.abilities[a].effective + ')' : null}</p>
     });
     return (
-      <div>
+      <div class="character-sheet">
         <h1>{c.bio.firstName + ' ' + (c.bio.middleName ? c.bio.middleName + ' ' : null) + c.bio.lastName}</h1>
         <p>Cabal: {c.bio.cabal}</p>
         <p>Objective: {c.bio.objective}</p>

@@ -1,5 +1,4 @@
-@import '~foundation-sites/scss/foundation.scss';
+@import '~bootstrap/dist/css/bootstrap.css';
 $fa-font-path:"../node_modules/font-awesome/fonts";
 @import '~font-awesome/scss/font-awesome';
-
-@include foundation-everything;
+@import '../src/vendor/css/rpg-awesome.min.css';

@@ -2,14 +2,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 var IdentitySchema = new Schema({
-  {
     name : String,
     percent : Number,
     description : String,
     ofCourse : String,
     substitutes : String,
     features : [ new Schema({any: Object}) ]
-  }
 })
 
 var RelationshipSchema = new Schema({
@@ -78,4 +76,4 @@ var CharacterSchema = new Schema({
   inventory : [ new Schema({any:Object}) ]
 })
 
-export default CharacterSchema
+module.exports = CharacterSchema
