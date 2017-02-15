@@ -25,9 +25,12 @@ export default class Home extends React.Component {
   render() {
     return (
       <div>
-        <TextInput edit={this.state.edit} copy={this.state.copy} handleChange={this.handleChange.bind(this)} onEnter={this.changeEdit}/>
-        <button type="button" class="success button" onClick={this.changeEdit}>Change</button>
+        <h1>Home Page</h1>
+        <h3>Deal with it.</h3>
       </div>
     );
   }
 }
+
+// <TextInput edit={this.state.edit} copy={this.state.copy} handleChange={this.handleChange.bind(this)} onEnter={this.changeEdit}/>
+// <button type="button" class="success button" onClick={this.changeEdit}>Change</button>

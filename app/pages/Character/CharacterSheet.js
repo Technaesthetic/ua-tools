@@ -16,7 +16,6 @@ export default class CharacterSheet extends React.Component {
     const gauges = Object.keys(c.gauges).map((g) => {
       return <ShockGauge gauge={g} notches={c.gauges[g]}></ShockGauge>
     });
-    console.log(c);
     const abilities = Object.keys(c.abilities).map((a) => {
       return <p>{a}: {c.abilities[a].base} {c.abilities[a].effective ? '(' + c.abilities[a].effective + ')' : null}</p>
     });

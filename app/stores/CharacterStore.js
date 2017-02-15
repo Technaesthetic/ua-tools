@@ -56,6 +56,10 @@ class CharacterStore extends EventEmitter {
     return this.list;
   }
 
+  getOne(id) {
+    return this.list.find((c) => {return c._id === id} )
+  }
+
   handleActions(action) {
     switch(action.type) {
       case "CREATE_ITEM": {

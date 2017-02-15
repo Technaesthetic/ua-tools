@@ -10,6 +10,6 @@ import Character from './pages/Character';
 ReactDOM.render(<Router history={hashHistory}>
     <Route path="/" component={Layout}>
       <IndexRoute component={Home}></IndexRoute>
-      <Route path="character" component={Character}></Route>
+      <Route path="/character(/:characterId)" component={Character}></Route>
     </Route>
   </Router>, document.getElementById('root'));
