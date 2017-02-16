@@ -54,7 +54,14 @@ export default class CharacterSheet extends React.Component {
       );
     });
     const characterImage = () => {
-      return <img style={{width:'100%' }}src={require(`../../../src/img/characters/${c.image}`)}/>
+      return (
+        <img style={{
+          maxWidth: '100%',
+          marginBottom:'18px',
+          boxShadow: '3px 3px 1px 0px #999',
+          borderRadius: '20px'
+        }}src={require(`../../../src/img/characters/${c.image}`)}/>
+      )
     }
     return (
       <div class="character-sheet">
