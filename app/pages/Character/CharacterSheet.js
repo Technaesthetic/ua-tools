@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './CharacterSheet/CharacterSheet.scss'
-import { Panel, ListGroup, ListGroupItem, Grid, Row, Col } from 'react-bootstrap'
+import { Panel, ListGroup, ListGroupItem, Grid, Row, Col, Label } from 'react-bootstrap'
 
 import ShockGauge from './CharacterSheet/ShockGauge'
 
@@ -53,6 +53,9 @@ export default class CharacterSheet extends React.Component {
         </Col>
       );
     });
+    const characterImage = () => {
+      return <img style={{width:'100%' }}src={require(`../../../src/img/characters/${c.image}`)}/>
+    }
     return (
       <div class="character-sheet">
 
@@ -72,6 +75,9 @@ export default class CharacterSheet extends React.Component {
                 </ListGroup>
               </Panel>
             </Col>
+            <Col md={6}>
+              {c.image ? characterImage() : null}
+            </Col>
           </Row>
           <Row>
             <Col md={12}>
@@ -82,8 +88,8 @@ export default class CharacterSheet extends React.Component {
                       <Col md={6}>
                         <Panel collapsible defaultExpanded header="Physical Health">
                           <p><strong>Wound Threshold:</strong> {c.wounds.threshold}</p>
-                          <p><strong>Current Condition: </strong> Below Average ({c.wounds.threshold - woundTotal()})</p>
-                          <Panel collapsible defaultCollapsed header="Summary">
+                          <p><strong>Current Condition: </strong> Wounded <Label bsStyle="danger">{c.wounds.threshold - woundTotal()}</Label></p>
+                          <Panel collapsible defaultExpanded header="Summary">
                             <ListGroup fill>
                               {woundList}
                               <ListGroupItem><strong>Wounds Taken: </strong>{woundTotal()}</ListGroupItem>
@@ -94,7 +100,7 @@ export default class CharacterSheet extends React.Component {
                       <Col md={6}>
                         <Panel collapsible defaultExpanded header="Mental Health">
                           <p><strong>Current Condition: </strong> {c.madness.length > 0 ? madnessListShort() : 'Normitive'}</p>
-                          <Panel collapsible defaultCollapsed header="Summary">
+                          <Panel collapsible defaultExpanded header="Summary">
                             <ListGroup fill>
                               {madnessListLong}
                             </ListGroup>
