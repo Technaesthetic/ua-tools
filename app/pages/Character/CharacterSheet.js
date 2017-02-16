@@ -11,11 +11,18 @@ export default class CharacterSheet extends React.Component {
 
   render() {
     const c = this.props.character
-    const madness = c.bio.madness.map((m) => {
-      return <li>{m.type + ' from ' + m.origin}</li>
+    const madnessListLong = c.madness.map((m) => {
+      return <ListGroupItem><strong>{m.type}</strong> from <strong>{m.origin}</strong></ListGroupItem>
     })
+    const madnessListShort = () => {
+      var l = []
+      for (var m of c.madness) {
+        l.push(m.type)
+      }
+      return l.join(', ')
+    };
     const gauges = Object.keys(c.gauges).map((g) => {
-      return <ShockGauge gauge={g} notches={c.gauges[g]}></ShockGauge>
+      return <ShockGauge gauge={g} character={c}></ShockGauge>
     });
     const abilities = Object.keys(c.abilities).map((a) => {
       return <p>{a}: {c.abilities[a].base} {c.abilities[a].effective ? '(' + c.abilities[a].effective + ')' : null}</p>
@@ -28,7 +35,23 @@ export default class CharacterSheet extends React.Component {
       return a
     };
     const woundList = c.wounds.list.map((w) => {
-        return <ListGroupItem>Took <strong>{w.amount}</strong> wounds from <strong>{w.origin}</strong></ListGroupItem>
+      return <ListGroupItem>Took <strong>{w.amount}</strong> wounds from <strong>{w.origin}</strong></ListGroupItem>
+    });
+    const identityList = c.identities.map((i) => {
+      return (
+        <Col md={6}>
+          <Panel>
+            <ListGroup fill>
+              <ListGroupItem bsStyle="info"><big><strong>{i.name}</strong></big><big class="pull-right">{i.percent}</big></ListGroupItem>
+              <ListGroupItem>{i.description}</ListGroupItem>
+              <ListGroupItem>I'm a <strong>{i.name}</strong>, of course I can <strong>{i.ofCourse}</strong></ListGroupItem>
+              <ListGroupItem>Substitutes for <strong>{i.substitutes}</strong></ListGroupItem>
+              <ListGroupItem><strong>{i.features[0].type} {i.features[0].value}</strong></ListGroupItem>
+              <ListGroupItem><strong>{i.features[1].type} {i.features[1].value}</strong></ListGroupItem>
+            </ListGroup>
+          </Panel>
+        </Col>
+      );
     });
     return (
       <div class="character-sheet">
@@ -49,36 +72,58 @@ export default class CharacterSheet extends React.Component {
                 </ListGroup>
               </Panel>
             </Col>
-            <Col md={6}>
+          </Row>
+          <Row>
+            <Col md={12}>
               <Panel collapsible defaultExpanded header="Medical Records">
                 <ListGroup fill>
                   <ListGroupItem>
-                    <Panel collapsible defaultExpanded header="Physical Health">
-                      <p><strong>Wound Threshold:</strong> {c.wounds.threshold}</p>
-                      <p><strong>Current Condition: </strong> Below Average ({c.wounds.threshold - woundTotal()})</p>
-                      <Panel collapsible defaultCollapsed header="Health Summary">
-                        <ListGroup fill>
-                          {woundList}
-                          <ListGroupItem><strong>Wounds Taken: </strong>{woundTotal()}</ListGroupItem>
-                        </ListGroup>
-                      </Panel>
-                    </Panel>
+                    <Row>
+                      <Col md={6}>
+                        <Panel collapsible defaultExpanded header="Physical Health">
+                          <p><strong>Wound Threshold:</strong> {c.wounds.threshold}</p>
+                          <p><strong>Current Condition: </strong> Below Average ({c.wounds.threshold - woundTotal()})</p>
+                          <Panel collapsible defaultCollapsed header="Summary">
+                            <ListGroup fill>
+                              {woundList}
+                              <ListGroupItem><strong>Wounds Taken: </strong>{woundTotal()}</ListGroupItem>
+                            </ListGroup>
+                          </Panel>
+                        </Panel>
+                      </Col>
+                      <Col md={6}>
+                        <Panel collapsible defaultExpanded header="Mental Health">
+                          <p><strong>Current Condition: </strong> {c.madness.length > 0 ? madnessListShort() : 'Normitive'}</p>
+                          <Panel collapsible defaultCollapsed header="Summary">
+                            <ListGroup fill>
+                              {madnessListLong}
+                            </ListGroup>
+                          </Panel>
+                        </Panel>
+                      </Col>
+                    </Row>
                   </ListGroupItem>
                 </ListGroup>
               </Panel>
             </Col>
           </Row>
+          <Row class="show-grid">
+            <Col md={12}>
+              <Panel collapsible defaultExpanded header="Combined Profile">
+                {gauges}
+              </Panel>
+            </Col>
+          </Row>
+          <Row class="show-grid">
+            <Col md={12}>
+            <Panel collapsible defaultExpanded header="Known Identities">
+              <Row class="show-grid">
+                {identityList}
+              </Row>
+            </Panel>
+            </Col>
+          </Row>
         </Grid>
-        <p>Cabal: {c.bio.cabal}</p>
-        <p>Objective: {c.bio.objective}</p>
-        <p>Characteristics: {c.bio.characteristics}</p>
-        <p>Obsession: {c.bio.obsession}</p>
-        <p>Fear Passion: {c.bio.passions.fear}</p>
-        <p>Rage Passion: {c.bio.passions.rage}</p>
-        <p>Noble Passion: {c.bio.passions.noble}</p>
-        <ul>{madness}</ul>
-        {gauges}
-        {abilities}
       </div>
     );
   }

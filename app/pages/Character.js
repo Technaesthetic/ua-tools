@@ -30,7 +30,6 @@ export default class Character extends React.Component {
     const { params } = this.props
     const { query } = this.props.location
     const { character } = this.state
-    const tooltip = (str) => {return <Tooltip>{str}</Tooltip>};
     // <input type="text" value={this.state.newName} onChange={this.handleChange}/>
     return (
       <div>
