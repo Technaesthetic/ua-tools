@@ -40,9 +40,13 @@ export default class CharacterSheet extends React.Component {
     const identityList = c.identities.map((i) => {
       return (
         <Col md={6}>
-          <Panel>
-            <ListGroup fill>
-              <ListGroupItem bsStyle="info"><big><strong>{i.name}</strong></big><big class="pull-right">{i.percent}</big></ListGroupItem>
+          <Panel header={
+            <span>
+              <strong><big>{i.name}</big></strong>
+              <big class="pull-right">{i.percent}</big>
+            </span>
+          }>
+            <ListGroup>
               <ListGroupItem>{i.description}</ListGroupItem>
               <ListGroupItem>I'm a <strong>{i.name}</strong>, of course I can <strong>{i.ofCourse}</strong></ListGroupItem>
               <ListGroupItem>Substitutes for <strong>{i.substitutes}</strong></ListGroupItem>
@@ -71,14 +75,14 @@ export default class CharacterSheet extends React.Component {
           <Row class="show-grid">
             <Col md={6}>
               <Panel collapsible defaultExpanded header="Biographical Information">
-                <ListGroup fill>
+                <ListGroup>
                   <ListGroupItem><strong>Name: </strong>{c.bio.firstName + ' ' + (c.bio.middleName ? c.bio.middleName + ' ' : null) + c.bio.lastName}</ListGroupItem>
                   <ListGroupItem><strong>Characteristics: </strong>{c.bio.characteristics}</ListGroupItem>
                   <ListGroupItem><strong>Affiliation: </strong>{c.bio.cabal}</ListGroupItem>
                   <ListGroupItem><strong>Obsession: </strong>{c.bio.obsession}</ListGroupItem>
                   <ListGroupItem><strong>Fear Passion: </strong>{c.bio.passions.fear}</ListGroupItem>
                   <ListGroupItem><strong>Rage Passion: </strong>{c.bio.passions.rage}</ListGroupItem>
-                  <ListGroupItem><strong>Noble Passion: </strong>{c.bio.passions.noble}</ListGroupItem>
+                  <ListGroupItem><strong>Noble Passion: </strong>{c.bio.passions.thing}</ListGroupItem>
                 </ListGroup>
               </Panel>
             </Col>
@@ -96,22 +100,17 @@ export default class CharacterSheet extends React.Component {
                         <Panel collapsible defaultExpanded header="Physical Health">
                           <p><strong>Wound Threshold:</strong> {c.wounds.threshold}</p>
                           <p><strong>Current Condition: </strong> Wounded <Label bsStyle="danger">{c.wounds.threshold - woundTotal()}</Label></p>
-                          <Panel collapsible defaultExpanded header="Summary">
-                            <ListGroup fill>
-                              {woundList}
-                              <ListGroupItem><strong>Wounds Taken: </strong>{woundTotal()}</ListGroupItem>
-                            </ListGroup>
-                          </Panel>
+                          <ListGroup>
+                            {woundList}
+                          </ListGroup>
                         </Panel>
                       </Col>
                       <Col md={6}>
                         <Panel collapsible defaultExpanded header="Mental Health">
                           <p><strong>Current Condition: </strong> {c.madness.length > 0 ? madnessListShort() : 'Normitive'}</p>
-                          <Panel collapsible defaultExpanded header="Summary">
-                            <ListGroup fill>
-                              {madnessListLong}
-                            </ListGroup>
-                          </Panel>
+                          <ListGroup>
+                            {madnessListLong}
+                          </ListGroup>
                         </Panel>
                       </Col>
                     </Row>

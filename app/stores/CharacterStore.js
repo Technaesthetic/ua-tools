@@ -9,6 +9,7 @@ class CharacterStore extends EventEmitter {
   constructor() {
     super();
     this.list = [];
+    this.ind = {};
     this.fetchAll();
   }
 
@@ -37,16 +38,23 @@ class CharacterStore extends EventEmitter {
   updateItem(_id, fields) {
     const self = this;
     axios.post('/api/upd/character', { _id, fields }).then(function(data) {
-      console.log(data, _id, fields);
-      self.fetch();
+      self.fetchAll();
     });
   }
 
   fetchAll() {
     const self = this;
     axios.post('/api/get/character').then(function(data){
+      var i = 0
       for (var c of data.data) {
-        self.list.push(Process(c))
+        if (self.ind.hasOwnProperty(c._id)) {
+          self.list[self.ind[c._id]] = Process(c)
+        } else {
+          self.ind[c._id] = i
+          self.list[i] = Process(c)
+        }
+        i++
+
       }
       self.emit('change');
     });

@@ -1,5 +1,5 @@
 import React from 'react';
-import * as TestActions from '../actions/TestActions';
+import * as CharacterActions from '../actions/CharacterActions';
 import characterStore from '../stores/CharacterStore';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 require('bootstrap/dist/js/bootstrap.js');
