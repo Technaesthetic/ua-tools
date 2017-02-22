@@ -68,7 +68,8 @@ var CharacterSchema = new Schema({
     threshold : Number,
     list : [ new Schema({
         origin : String,
-        amount : Number
+        amount : Number,
+        key: Date
       })
     ]
   },

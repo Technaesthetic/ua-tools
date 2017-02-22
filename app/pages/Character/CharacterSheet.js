@@ -2,6 +2,8 @@ import React from 'react';
 import styles from './CharacterSheet/CharacterSheet.scss'
 import { Panel, ListGroup, ListGroupItem, Grid, Row, Col, Label } from 'react-bootstrap'
 
+import Bio from './CharacterSheet/Bio'
+import Health from './CharacterSheet/Health'
 import ShockGauge from './CharacterSheet/ShockGauge'
 
 export default class CharacterSheet extends React.Component {
@@ -11,8 +13,8 @@ export default class CharacterSheet extends React.Component {
 
   render() {
     const c = this.props.character
-    const madnessListLong = c.madness.map((m) => {
-      return <ListGroupItem><strong>{m.type}</strong> from <strong>{m.origin}</strong></ListGroupItem>
+    const madnessListLong = c.madness.map((m, i) => {
+      return <ListGroupItem key={i}><strong>{m.type}</strong> from <strong>{m.origin}</strong></ListGroupItem>
     })
     const madnessListShort = () => {
       var l = []
@@ -21,37 +23,27 @@ export default class CharacterSheet extends React.Component {
       }
       return l.join(', ')
     };
-    const gauges = Object.keys(c.gauges).map((g) => {
-      return <ShockGauge gauge={g} character={c}></ShockGauge>
+    const gauges = Object.keys(c.gauges).map((g, i) => {
+      return <ShockGauge gauge={g} character={c} key={i}></ShockGauge>
     });
-    const abilities = Object.keys(c.abilities).map((a) => {
-      return <p>{a}: {c.abilities[a].base} {c.abilities[a].effective ? '(' + c.abilities[a].effective + ')' : null}</p>
+    const abilities = Object.keys(c.abilities).map((a, i) => {
+      return <p key={i}>{a}: {c.abilities[a].base} {c.abilities[a].effective ? '(' + c.abilities[a].effective + ')' : null}</p>
     });
-    const woundTotal = () => {
-      var a = 0;
-      for (var w of c.wounds.list) {
-        a += w.amount;
-      }
-      return a
-    };
-    const woundList = c.wounds.list.map((w) => {
-      return <ListGroupItem>Took <strong>{w.amount}</strong> wounds from <strong>{w.origin}</strong></ListGroupItem>
-    });
-    const identityList = c.identities.map((i) => {
+    const identityList = c.identities.map((identity, i) => {
       return (
-        <Col md={6}>
+        <Col md={6} key={i}>
           <Panel header={
             <span>
-              <strong><big>{i.name}</big></strong>
-              <big class="pull-right">{i.percent}</big>
+              <strong><big>{identity.name}</big></strong>
+              <big class="pull-right">{identity.percent}</big>
             </span>
           }>
             <ListGroup>
-              <ListGroupItem>{i.description}</ListGroupItem>
-              <ListGroupItem>I'm a <strong>{i.name}</strong>, of course I can <strong>{i.ofCourse}</strong></ListGroupItem>
-              <ListGroupItem>Substitutes for <strong>{i.substitutes}</strong></ListGroupItem>
-              <ListGroupItem><strong>{i.features[0].type} {i.features[0].value}</strong></ListGroupItem>
-              <ListGroupItem><strong>{i.features[1].type} {i.features[1].value}</strong></ListGroupItem>
+              <ListGroupItem>{identity.description}</ListGroupItem>
+              <ListGroupItem>I'm a <strong>{identity.name}</strong>, of course I can <strong>{identity.ofCourse}</strong></ListGroupItem>
+              <ListGroupItem>Substitutes for <strong>{identity.substitutes}</strong></ListGroupItem>
+              <ListGroupItem><strong>{identity.features[0].type} {identity.features[0].value}</strong></ListGroupItem>
+              <ListGroupItem><strong>{identity.features[1].type} {identity.features[1].value}</strong></ListGroupItem>
             </ListGroup>
           </Panel>
         </Col>
@@ -74,17 +66,7 @@ export default class CharacterSheet extends React.Component {
         <h1>{c.bio.lastName + ', ' + c.bio.firstName + (c.bio.middleName ? ' ' + c.bio.middleName : null)}</h1>
           <Row class="show-grid">
             <Col md={6}>
-              <Panel collapsible defaultExpanded header="Biographical Information">
-                <ListGroup>
-                  <ListGroupItem><strong>Name: </strong>{c.bio.firstName + ' ' + (c.bio.middleName ? c.bio.middleName + ' ' : null) + c.bio.lastName}</ListGroupItem>
-                  <ListGroupItem><strong>Characteristics: </strong>{c.bio.characteristics}</ListGroupItem>
-                  <ListGroupItem><strong>Affiliation: </strong>{c.bio.cabal}</ListGroupItem>
-                  <ListGroupItem><strong>Obsession: </strong>{c.bio.obsession}</ListGroupItem>
-                  <ListGroupItem><strong>Fear Passion: </strong>{c.bio.passions.fear}</ListGroupItem>
-                  <ListGroupItem><strong>Rage Passion: </strong>{c.bio.passions.rage}</ListGroupItem>
-                  <ListGroupItem><strong>Noble Passion: </strong>{c.bio.passions.thing}</ListGroupItem>
-                </ListGroup>
-              </Panel>
+              <Bio character={c}></Bio>
             </Col>
             <Col md={6}>
               {c.image ? characterImage() : null}
@@ -97,13 +79,7 @@ export default class CharacterSheet extends React.Component {
                   <ListGroupItem>
                     <Row>
                       <Col md={6}>
-                        <Panel collapsible defaultExpanded header="Physical Health">
-                          <p><strong>Wound Threshold:</strong> {c.wounds.threshold}</p>
-                          <p><strong>Current Condition: </strong> Wounded <Label bsStyle="danger">{c.wounds.threshold - woundTotal()}</Label></p>
-                          <ListGroup>
-                            {woundList}
-                          </ListGroup>
-                        </Panel>
+                        <Health character={c}></Health>
                       </Col>
                       <Col md={6}>
                         <Panel collapsible defaultExpanded header="Mental Health">

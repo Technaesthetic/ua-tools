@@ -24,9 +24,9 @@ export default class Layout extends React.Component {
   render() {
     const isActive = this.props.history.isActive;
     const { characters } = this.state
-    const chars = characters.map((item) => {
+    const chars = characters.map((item, i) => {
       return (
-        <LinkContainer to={"character/" + item._id}>
+        <LinkContainer to={"character/" + item._id} key={i}>
           <MenuItem>{item.bio.firstName + ' ' + item.bio.lastName}</MenuItem>
         </LinkContainer>
       )

@@ -35,11 +35,24 @@ class CharacterStore extends EventEmitter {
     });
   }
 
-  updateItem(_id, fields) {
+  updateItem(_id, fields, type, extra) {
     const self = this;
-    axios.post('/api/upd/character', { _id, fields }).then(function(data) {
-      self.fetchAll();
-    });
+    var allowed = true
+    if (type === 'normal') {
+      fields = {$set: fields}
+    } else if (type === 'ArrPush') {
+      fields = {$push : fields}
+    } else if (type === 'ArrPull') {
+      fields = {$pull : fields}
+    } else {
+      allowed = false
+    }
+    if (allowed == true) {
+      axios.post('/api/upd/character', { _id, fields }).then(function(data) {
+        self.fetchAll();
+      });
+    }
+
   }
 
   fetchAll() {
@@ -77,7 +90,10 @@ class CharacterStore extends EventEmitter {
         this.deleteItem(action._id);
       }
       case "UPDATE_ITEM": {
-        this.updateItem(action._id, action.fields);
+        this.updateItem(action._id, action.fields, action.opType, action.extra);
+      }
+      case "REFRESH": {
+        this.fetchAll()
       }
     }
   }
