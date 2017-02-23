@@ -21,7 +21,7 @@ export default class Bio extends React.Component {
     return (
       <Panel collapsible defaultExpanded header="Biographical Information">
         <ListGroup>
-          <ListGroupItem><strong>Name: </strong>{c.bio.firstName + ' ' + (c.bio.middleName ? c.bio.middleName + ' ' : null) + c.bio.lastName}</ListGroupItem>
+          <ListGroupItem><Field display='Name' value={c.bio.name} id={c._id} fieldName='bio.name'></Field></ListGroupItem>
           <ListGroupItem><Field display='Characteristics' value={c.bio.characteristics} id={c._id} fieldName='bio.characteristics'></Field></ListGroupItem>
           <ListGroupItem><Field display='Affiliation' value={c.bio.cabal} id={c._id} fieldName='bio.cabal'></Field></ListGroupItem>
           <ListGroupItem><Field display='Obsession' value={c.bio.obsession} id={c._id} fieldName='bio.obsession'></Field></ListGroupItem>

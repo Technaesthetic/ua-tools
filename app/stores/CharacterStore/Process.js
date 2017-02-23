@@ -1,5 +1,7 @@
 function Process(c) {
   const self = this;
+
+  // Basic Consts
   const Coercion = {
     helplessness: 'connect',
     isolation: 'status',
@@ -14,6 +16,8 @@ function Process(c) {
     violence: 'fitness',
     unnatural: 'knowledge'
   }
+
+  // Calculate Ability Function
   function calculate (dir, name, notches, mods) {
     var val = {}
     if (dir === 'up') {
@@ -23,6 +27,8 @@ function Process(c) {
     }
     return val
   }
+
+  // Calculate Abilities
   c.abilities = {
     fitness: calculate('up', 'fitness', c.gauges.helplessness.hardened),
     dodge: calculate('down', 'dodge', c.gauges.helplessness.hardened),
@@ -35,7 +41,37 @@ function Process(c) {
     connect: calculate('up', 'connect', c.gauges.violence.hardened),
     struggle: calculate('down', 'struggle', c.gauges.violence.hardened),
   }
+
+  // Set Up Extra Features
   c.features = []
+
+  // Determine if Sociopathic Function
+  function sociopathic () {
+    var maxed = 0
+    var notches = 0
+    for (var g of Object.keys(c.gauges)) {
+      if (c.gauges[g].hardened >= 9) {
+        maxed += 1
+      }
+      notches += c.gauges[g].hardened
+    }
+    if (notches >= 35 || maxed >= 2) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  if (sociopathic()) {
+    c.features.push({
+      type: 'sociopathic',
+      percent: 0,
+      source: 'default'
+    })
+  }
+
+
+  // Handle Identities
   for (var i of c.identities) {
     if (i.substitutes) {
       c.abilities[i.substitutes.toLowerCase()].effective = i.percent
@@ -161,6 +197,8 @@ function Process(c) {
       }
     }
   }
+
+  // Return Character
   return c
 }
 

@@ -4,6 +4,7 @@ import { Panel, ListGroup, ListGroupItem, Grid, Row, Col, Label } from 'react-bo
 
 import Bio from './CharacterSheet/Bio'
 import Health from './CharacterSheet/Health'
+import Mental from './CharacterSheet/Mental'
 import ShockGauge from './CharacterSheet/ShockGauge'
 
 export default class CharacterSheet extends React.Component {
@@ -63,7 +64,7 @@ export default class CharacterSheet extends React.Component {
       <div class="character-sheet">
 
         <Grid>
-        <h1>{c.bio.lastName + ', ' + c.bio.firstName + (c.bio.middleName ? ' ' + c.bio.middleName : null)}</h1>
+        <h1>{c.bio.name}</h1>
           <Row class="show-grid">
             <Col md={6}>
               <Bio character={c}></Bio>
@@ -82,12 +83,7 @@ export default class CharacterSheet extends React.Component {
                         <Health character={c}></Health>
                       </Col>
                       <Col md={6}>
-                        <Panel collapsible defaultExpanded header="Mental Health">
-                          <p><strong>Current Condition: </strong> {c.madness.length > 0 ? madnessListShort() : 'Normitive'}</p>
-                          <ListGroup>
-                            {madnessListLong}
-                          </ListGroup>
-                        </Panel>
+                        <Mental character={c}></Mental>
                       </Col>
                     </Row>
                   </ListGroupItem>

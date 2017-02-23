@@ -23,6 +23,7 @@ var CharacterSchema = new Schema({
     middleName : String,
     nickname : String,
     streetName : String,
+    name: String,
     cabal : String,
     objective : String,
     characteristics : String,
@@ -32,14 +33,13 @@ var CharacterSchema = new Schema({
       fear : String,
       rage : String,
       noble : String
-    },
-    madness : [
-      {
-        type : String,
-        origin : String
-      }
-    ]
+    }
   },
+  madness : [ new Schema({
+      type : String,
+      origin : String
+    })
+  ],
   gauges : {
     helplessness : {
       hardened : Number,
@@ -68,8 +68,7 @@ var CharacterSchema = new Schema({
     threshold : Number,
     list : [ new Schema({
         origin : String,
-        amount : Number,
-        key: Date
+        amount : Number
       })
     ]
   },

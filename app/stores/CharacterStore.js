@@ -67,8 +67,8 @@ class CharacterStore extends EventEmitter {
           self.list[i] = Process(c)
         }
         i++
-
       }
+      console.log(self.list)
       self.emit('change');
     });
   }
