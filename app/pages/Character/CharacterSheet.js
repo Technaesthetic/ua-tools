@@ -6,14 +6,51 @@ import Bio from './CharacterSheet/Bio'
 import Health from './CharacterSheet/Health'
 import Mental from './CharacterSheet/Mental'
 import ShockGauge from './CharacterSheet/ShockGauge'
+import Identity from './CharacterSheet/Identity'
 
 export default class CharacterSheet extends React.Component {
   constructor() {
     super();
+    this.state = {
+      character: {}
+    }
+    this.addIdentity = this.addIdentity.bind(this)
+  }
+
+  componentWillMount() {
+    this.setState({character: this.props.character})
+  }
+  componentWillReceiveProps(newP) {
+    this.setState({character: newP.character})
+  }
+
+  addIdentity() {
+    var template = {
+        name : '',
+        percent : 0,
+        description : '',
+        ofCourse : '',
+        substitutes : '',
+        features : [
+          {
+            type: '',
+            value: '',
+            notes: ''
+          },
+          {
+            type: '',
+            value: '',
+            notes: ''
+          }
+        ]
+    }
+    var newC = this.state.character
+    newC.identities.push(template)
+    this.setState({character: newC})
   }
 
   render() {
-    const c = this.props.character
+    const c = this.state.character
     const madnessListLong = c.madness.map((m, i) => {
       return <ListGroupItem key={i}><strong>{m.type}</strong> from <strong>{m.origin}</strong></ListGroupItem>
     })
@@ -33,20 +70,7 @@ export default class CharacterSheet extends React.Component {
     const identityList = c.identities.map((identity, i) => {
       return (
         <Col md={6} key={i}>
-          <Panel header={
-            <span>
-              <strong><big>{identity.name}</big></strong>
-              <big class="pull-right">{identity.percent}</big>
-            </span>
-          }>
-            <ListGroup>
-              <ListGroupItem>{identity.description}</ListGroupItem>
-              <ListGroupItem>I'm a <strong>{identity.name}</strong>, of course I can <strong>{identity.ofCourse}</strong></ListGroupItem>
-              <ListGroupItem>Substitutes for <strong>{identity.substitutes}</strong></ListGroupItem>
-              <ListGroupItem><strong>{identity.features[0].type} {identity.features[0].value}</strong></ListGroupItem>
-              <ListGroupItem><strong>{identity.features[1].type} {identity.features[1].value}</strong></ListGroupItem>
-            </ListGroup>
-          </Panel>
+          <Identity identity={identity}></Identity>
         </Col>
       );
     });
@@ -56,7 +80,8 @@ export default class CharacterSheet extends React.Component {
           maxWidth: '100%',
           marginBottom:'18px',
           boxShadow: '3px 3px 1px 0px #999',
-          borderRadius: '20px'
+          borderRadius: '20px',
+          border: '1px solid #ccc'
         }}src={require(`../../../src/img/characters/${c.image}`)}/>
       )
     }
@@ -100,7 +125,12 @@ export default class CharacterSheet extends React.Component {
           </Row>
           <Row class="show-grid">
             <Col md={12}>
-            <Panel collapsible defaultExpanded header="Known Identities">
+            <Panel header={
+              <span>
+                <span>Known Identities</span>
+                <a class="text-primary" onClick={this.addIdentity}><span class="pull-right"><i class="fa fa-plus"></i> Add</span></a>
+              </span>
+            }>
               <Row class="show-grid">
                 {identityList}
               </Row>
