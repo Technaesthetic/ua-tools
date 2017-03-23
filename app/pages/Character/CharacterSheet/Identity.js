@@ -13,8 +13,8 @@ export default class Identity extends React.Component {
     this.handleChangeName = this.handleChangeName.bind(this)
     this.handleChangePercent = this.handleChangePercent.bind(this)
     this.handleChangeOfCourse = this.handleChangeOfCourse.bind(this)
-    this.setGrants = this.setGrants.bind(this)
-    this.setSubstitutes = this.setSubstitutes.bind(this)
+    this.setNormal = this.setNormal.bind(this)
+    this.setSupernatural = this.setSupernatural.bind(this)
   }
 
   handleChangeName(e) {
@@ -33,16 +33,14 @@ export default class Identity extends React.Component {
     this.setState({identity: newIdentity})
   }
 
-  setGrants() {
+  setSupernatural() {
     var newIdentity = this.state.identity
-    newIdentity.substitutes = null
-    newIdentity.grants = true
+    newIdentity.type = 'supernatural'
     this.setState({identity: newIdentity})
   }
-  setSubstitutes() {
+  setNormal() {
     var newIdentity = this.state.identity
-    newIdentity.substitutes = true
-    newIdentity.grants = null
+    newIdentity.type = 'normal'
     this.setState({identity: newIdentity})
   }
 
@@ -84,7 +82,7 @@ export default class Identity extends React.Component {
 
     const editIdentity = () => {
       const s = (w) => {return {display:"inline-block", width:w}}
-      const substituteSelect = () => {
+      const normalSelect = () => {
         return (
           <select class="form-control" style={s("auto")} componentClass="select" value={identity.substitutes}>
             <option value="Fitness">Fitness</option>
@@ -100,7 +98,7 @@ export default class Identity extends React.Component {
           </select>
         )
       }
-      const grantsSelect = () => {
+      const supernaturalSelect = () => {
         return (
           <select class="form-control" style={s("auto")} componentClass="select" value={identity.grants}>
             <option value="Avatar Archetype">Avatar</option>
@@ -121,18 +119,18 @@ export default class Identity extends React.Component {
             <span>
               <strong><big><input class="form-control" style={s(identity.name.length + 5 + "ex")} type="text" onChange={this.handleChangeName} value={identity.name}/></big></strong>
               &emsp;
-              <Radio inline checked={identity.type === 'normal' ? true : false}>Normal</Radio>
-              <Radio inline checked={identity.type === 'supernatural' ? true : false}>Supernatural</Radio>
+              <Radio inline onClick={this.setNormal} checked={identity.type === 'normal' ? true : false}>Normal</Radio>
+              <Radio inline onClick={this.setSupernatural} checked={identity.type === 'supernatural' ? true : false}>Supernatural</Radio>
               <big class="pull-right"><input class="form-control" style={s("9ex")} type="number" value={identity.percent} onChange={this.handleChangePercent} /></big>
             </span>
           }>
             <ListGroup>
-              <ListGroupItem>I'm a <strong>{identity.name}</strong>, of course I can <strong><FormControl style={s(identity.ofCourse.length + 2 + "ex")} type="text" onChange={this.handleChangeOfCourse} value={identity.ofCourse}/></strong></ListGroupItem>
+              {identity.type === 'normal' ? <ListGroupItem>I'm a <strong>{identity.name}</strong>, of course I can <strong><FormControl style={s(identity.ofCourse.length + 2 + "ex")} type="text" onChange={this.handleChangeOfCourse} value={identity.ofCourse}/></strong></ListGroupItem> : null}
               <ListGroupItem>
                 {identity.type == 'normal' ? 'Substitutes for' : 'Grants'}
                 &emsp;
-                {identity.type === 'normal' ? substituteSelect() : null}
-                {identity.grants ? grantsSelect() : null}
+                {identity.type === 'normal' ? normalSelect() : null}
+                {identity.type === 'supernatural' ? supernaturalSelect() : null}
               </ListGroupItem>
               <ListGroupItem><strong>{identity.features[0].type} {identity.features[0].value}</strong></ListGroupItem>
               <ListGroupItem><strong>{identity.features[1].type} {identity.features[1].value}</strong></ListGroupItem>
