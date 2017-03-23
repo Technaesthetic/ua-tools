@@ -27,8 +27,8 @@ export default class CharacterSheet extends React.Component {
   addIdentity() {
     var template = {
         name : '',
+        type: 'normal',
         percent : 0,
-        description : '',
         ofCourse : '',
         substitutes : '',
         features : [
