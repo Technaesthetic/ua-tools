@@ -27,7 +27,7 @@ export default class CharacterSheet extends React.Component {
   addIdentity() {
     var template = {
         name : '',
-        type: 'normal',
+        type: 'new',
         percent : 0,
         ofCourse : '',
         substitutes : '',
@@ -70,7 +70,7 @@ export default class CharacterSheet extends React.Component {
     const identityList = c.identities.map((identity, i) => {
       return (
         <Col md={6} key={i}>
-          <Identity identity={identity}></Identity>
+          <Identity identity={identity} identityId={identity._id} charId={c._id}></Identity>
         </Col>
       );
     });

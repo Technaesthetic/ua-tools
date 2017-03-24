@@ -73,7 +73,7 @@ function Process(c) {
 
   // Handle Identities
   for (var i of c.identities) {
-    if (i.substitutes) {
+    if (i.substitutes && i.type === 'normal') {
       c.abilities[i.substitutes.toLowerCase()].effective = i.percent
     }
     for (var f of i.features) {
@@ -97,11 +97,11 @@ function Process(c) {
           break
         }
         case 'Coerces a Meter': {
-          c.abilities[Coercion[f.meter]].coerces = i.percent
-          if (!c.gauges[f.meter].mods) {
-            c.gauges[f.meter].mods = []
+          c.abilities[Coercion[f.value]].coerces = i.percent
+          if (!c.gauges[f.value].mods) {
+            c.gauges[f.value].mods = []
           }
-          c.gauges[f.meter].mods.push({
+          c.gauges[f.value].mods.push({
             type: 'Coerces',
             source: i.name,
             percent: i.percent
@@ -111,14 +111,14 @@ function Process(c) {
         case 'Evaluates a Meter': {
           c.features.push({
             type: 'Evaluates',
-            meter: f.meter,
+            meter: f.value,
             percent: i.percent,
             source: i.name
           })
-          if (!c.gauges[f.meter].mods) {
-            c.gauges[f.meter].mods = []
+          if (!c.gauges[f.value].mods) {
+            c.gauges[f.value].mods = []
           }
-          c.gauges[f.meter].mods.push({
+          c.gauges[f.value].mods.push({
             type: 'Evaluates',
             source: i.name,
             percent: i.percent
@@ -154,8 +154,11 @@ function Process(c) {
           break
         }
         case 'Resist Shocks to Meter': {
-          c.abilities[Stress[f.meter]].madness = i.percent
-          c.gauges[f.meter].mods.push({
+          c.abilities[Stress[f.value]].madness = i.percent
+          if (!c.gauges[f.value].mods) {
+            c.gauges[f.value].mods = []
+          }
+          c.gauges[f.value].mods.push({
             type: 'Resist',
             source: i.name,
             percent: i.percent

@@ -75,6 +75,7 @@ export default class ShockGauge extends React.Component {
           <Col md={5} sm={5} xs={8}>
             <label>{downbeat}&#160;</label>
             <Label>{c.abilities[downbeat.toLowerCase()].base}</Label>
+            <Label bsStyle="success">{c.abilities[downbeat.toLowerCase()].effective ? c.abilities[downbeat.toLowerCase()].effective : null}</Label>
           </Col>
         </Row>
         <Row>

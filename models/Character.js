@@ -3,11 +3,13 @@ const Schema = mongoose.Schema
 
 var IdentitySchema = new Schema({
     name : String,
+    type: String,
+    grants: String,
     percent : Number,
     description : String,
     ofCourse : String,
     substitutes : String,
-    features : [ new Schema({any: Object}) ]
+    features : [ new Schema({type: String, value: String}) ]
 })
 
 var RelationshipSchema = new Schema({

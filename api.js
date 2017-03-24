@@ -43,6 +43,7 @@ router.post('/del/:type', function response(req, res) {
 router.post('/upd/:type', function response(req, res) {
   const type = req.params.type
   const update = req.body.fields;
+  console.log('REQUEST BODY')
   console.log(req.body);
   models[type].findByIdAndUpdate(req.body._id, update, {}, function(err) {
     if (err) {
